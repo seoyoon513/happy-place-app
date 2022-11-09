@@ -12,4 +12,8 @@
     <color name="dark_blue">#03396c</color>
     <color name="blue">#005b96</color>
 
+    <color name="primary_text_color">#212121</color>
+    <color name="secondary_text_color">#9AA2AF</color>
+    <color name="button_background_color">#63ace5</color>
+
 </resources>
