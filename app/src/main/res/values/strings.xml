@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">HappyPlaceApp</string>
+    <string name="fab_add_happy_place">fab_add_happy_place</string>
+    <string name="edt_hint_title">Title</string>
+    <string name="edt_hint_description">Description</string>
+    <string name="edt_hint_date">Date</string>
+    <string name="edt_hint_location">Location</string>
+    <string name="text_add_image">ADD IMAGE</string>
+    <string name="btn_text_save">SAVE</string>
 </resources>
