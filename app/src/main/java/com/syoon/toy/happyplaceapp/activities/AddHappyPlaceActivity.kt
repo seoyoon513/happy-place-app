@@ -5,6 +5,7 @@ import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.syoon.toy.happyplaceapp.R
@@ -20,11 +21,17 @@ class AddHappyPlaceActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_happy_place)
 
         val tbrAddPlace = findViewById<Toolbar>(R.id.tbr_add_place)
+        val btnSave = findViewById<Button>(R.id.btn_save)
 
         setSupportActionBar(tbrAddPlace)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // toolbar 뒤로가기
         tbrAddPlace.setNavigationOnClickListener {
             onBackPressed()
+        }
+
+        btnSave.setOnClickListener {
+            // TODO: save the Datamodel to the database
+
         }
     }
 
