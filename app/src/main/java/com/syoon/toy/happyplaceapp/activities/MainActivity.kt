@@ -1,9 +1,10 @@
-package com.syoon.toy.happyplaceapp
+package com.syoon.toy.happyplaceapp.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.syoon.toy.happyplaceapp.R
 
 class MainActivity : AppCompatActivity() {
 
