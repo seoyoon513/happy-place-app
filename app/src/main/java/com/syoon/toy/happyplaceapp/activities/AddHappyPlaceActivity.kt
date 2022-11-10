@@ -1,4 +1,4 @@
-package com.syoon.toy.happyplaceapp
+package com.syoon.toy.happyplaceapp.activities
 
 import android.content.Context
 import android.content.ContextWrapper
@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.syoon.toy.happyplaceapp.R
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
