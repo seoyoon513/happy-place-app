@@ -1,16 +1,21 @@
 package com.syoon.toy.happyplaceapp
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.media.Image
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.Gallery
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +25,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.jar.Manifest
@@ -29,6 +35,8 @@ class AddHappyPlaceActivity : AppCompatActivity(), View.OnClickListener {
     private var cal = Calendar.getInstance()
     private lateinit var dateSetListener: OnDateSetListener
 
+    var placeImage : ImageView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_happy_place)
@@ -36,6 +44,7 @@ class AddHappyPlaceActivity : AppCompatActivity(), View.OnClickListener {
         val tbrAddPlace = findViewById<Toolbar>(R.id.tbr_add_place)
         var edtDate = findViewById<EditText>(R.id.edt_date)
         var tvAddImage = findViewById<TextView>(R.id.tv_add_image)
+        placeImage = findViewById(R.id.iv_place_image)
 
         setSupportActionBar(tbrAddPlace)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // toolbar 뒤로가기
@@ -78,17 +87,36 @@ class AddHappyPlaceActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK){
+            if(requestCode == GALLERY){
+                if(data != null){
+                    val contentURI = data.data
+                    try{
+                        //getBitmap() : 곧 사라질 기능인데 아직 대안이 없다고 함.
+                        val selectedImageBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
+                        placeImage?.setImageBitmap(selectedImageBitmap)
+                    }catch (e: IOException){
+                        e.printStackTrace()
+                        Toast.makeText(this@AddHappyPlaceActivity, "Failed to load the Image from Gallery!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
     // 갤러리 권한 요청 (복수개)
     private fun choosePhotoFromGallery() {
-        //.withActivity : Deprecated
+        //.withActivity : Deprecated -> .withContext
         Dexter.withContext(this).withPermissions(
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE
         ).withListener(object: MultiplePermissionsListener {
             override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                 if(report!!.areAllPermissionsGranted()){
-                    Toast.makeText(this@AddHappyPlaceActivity,
-                    "Storage READ/WRITE permission are granted. Now you can select an image from GALLERY", Toast.LENGTH_SHORT).show()
+                    val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    startActivityForResult(galleryIntent, GALLERY)
                 }
             }
             override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>, token: PermissionToken) {
@@ -123,6 +151,10 @@ class AddHappyPlaceActivity : AppCompatActivity(), View.OnClickListener {
         val myFormat = "dd.MM.yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.getDefault()) // 휴대폰 위치따라 현지 기본 날짜 포맷 사용
         findViewById<EditText>(R.id.edt_date).setText(sdf.format(cal.time).toString()) // 캘린더 상의 시간 사용
+    }
+
+    companion object{
+        private const val GALLERY = 1
     }
 
 }
