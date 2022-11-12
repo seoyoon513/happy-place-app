@@ -82,6 +82,8 @@
                     android:id="@+id/edt_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:inputType="text"
                     android:textSize="@dimen/edt_text_size" />
 
@@ -123,6 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_add_image"
+                android:textColor="@color/button_background_color"
                 app:layout_constraintBottom_toTopOf="@id/btn_save"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_place_image"
